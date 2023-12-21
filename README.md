@@ -21,13 +21,13 @@ Created entirely in Java, the program makes use of file reading, user input, var
    javac Main.java
    java Main
    ```
-  - Make sure you have Java installed on your system.
+   Make sure you have Java installed on your system.
 
 1. **Follow On-Screen Instructions:**
    - The program will prompt you with guesses, and you can provide feedback for each letter using:
-   - 'g' (green: correct)
-   - 'y' (yellow: in the wrong position)
-   - 'n' (gray: not in the word)
+      - **'g'** (green: correct)
+      - **'y'** (yellow: in the wrong position)
+      - **'n'** (gray: not in the word)
 
 2. **Repeat Until Solved:**
    - The solver will continue suggesting guesses based on your feedback until the correct word is identified.
