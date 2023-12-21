@@ -160,7 +160,7 @@ public class Main {
     System.out.println("\n\nGuess: " + guess);
     char[] responses = { 0, 0, 0, 0, 0 };
 
-    for (int i = 0; i < guess.length(); i++) {
+    for (int i = 0; i < 5; i++) {
       char letter = guess.charAt(i);
       System.out.print(letter + " (g/y/n): ");
       char hint;
