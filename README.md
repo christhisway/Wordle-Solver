@@ -17,7 +17,6 @@ Created entirely in Java, the program makes use of file reading, user input, var
    git clone https://github.com/christhisway/Wordle-Solver.git
    cd Wordle-Solver
 
-   # Compile and run files
    javac Main.java
    java Main
    ```
