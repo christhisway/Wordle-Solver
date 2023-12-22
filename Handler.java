@@ -16,8 +16,8 @@ public class Handler {
      * @param guess - current guess
      * @return char[] - array of responses (either g/y/n) for each letter
      */
-    public static char[] guessHandler(String guess) {
-        System.out.println("\n\nGuess: " + guess);
+    public static char[] getFeedback(String guess) {
+        System.out.println("\nGuess: " + guess);
         char[] responses = { 0, 0, 0, 0, 0 };
         for (int i = 0; i < 5; i++) {
             char letter = guess.charAt(i);

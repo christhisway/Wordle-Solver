@@ -223,6 +223,7 @@ public class GuessGenerator {
                 }
             }
         }
+        System.out.println("There are " + words.size() + " possible answers remaining.");
         return words;
     }
 
