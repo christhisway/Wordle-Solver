@@ -20,18 +20,20 @@ public class Main {
 
     int attempts = 0;
     String guess;
-    char[] responses = new char[5];
+    char[] responses;
 
     // Game Loop
 
     while (attempts < 6) {
       System.out.println("Guesses remaining: " + (6 - attempts) + ".");
       // Assign word from word list to guess
-      if (attempts == 0) guess = Brain.initialGuess();
-      else guess = Brain.nextGuess();
+      if (attempts == 0)
+        guess = Brain.initialGuess();
+      else
+        guess = Brain.nextGuess();
       // Grab Wordle Feedback for the given guess
       responses = Handler.getFeedback(guess);
-      if ("ggggg".equals(String.valueOf(responses))){// stops execution if the guess was correct
+      if ("ggggg".equals(String.valueOf(responses))) {// stops execution if the guess was correct
         System.out.println("\nGreat job program!");
         break;
       }
@@ -40,7 +42,7 @@ public class Main {
       attempts++;
     }
 
-    if (attempts >= 6){ // output failure message if the correct guess was not reached
+    if (attempts >= 6) { // output failure message if the correct guess was not reached
       System.out.println("\nBad job program!");
     }
 

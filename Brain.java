@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Contains the words and their frequencies, and generates each guess.
@@ -10,9 +9,11 @@ import java.util.Random;
  */
 
 public class Brain {
+    private static Random rnd = new Random();
     private static ArrayList<Double> frequencies = getFrequencies();
     private static ArrayList<String> words = filterWords(getWords(), frequencies, 0.0);
     
+
     /**
      * Reads file of word frequencies and puts them into a ArrayList.
      * 
@@ -28,7 +29,7 @@ public class Brain {
             System.exit(0);
         }
         String[] freqArray = freqString.split("\n");
-        ArrayList<Double> freqArrayList = new ArrayList<Double>();
+        ArrayList<Double> freqArrayList = new ArrayList<>();
         for (String freqLine : freqArray) {
             Double frequency = Double.parseDouble(freqLine.substring(6));
             freqArrayList.add(frequency);
@@ -52,21 +53,20 @@ public class Brain {
             System.exit(0);
         }
         String[] wordsArray = wordsString.split("\n");
-        ArrayList<String> wordsArrayList = new ArrayList<String>();
-        for (String word : wordsArray) {
-            wordsArrayList.add(word);
-        }
-        return wordsArrayList;
+        return new ArrayList<>(Arrays.asList(wordsArray));
     }
 
     /**
-     * Removes all words under a specified frequency (generally set to 0.0) from the word list.
+     * Removes all words under a specified frequency (generally set to 0.0) from the
+     * word list.
      * 
-     * @param words ArrayList<String> of words to be filtered
-     * @param frequencyThreshold Double value, at or below which all words should be removed from words
+     * @param words              ArrayList<String> of words to be filtered
+     * @param frequencyThreshold Double value, at or below which all words should be
+     *                           removed from words
      * @return Modified String ArrayList without the unfrequent words
      */
-    private static ArrayList<String> filterWords(ArrayList<String> words, ArrayList<Double> frequencies, double frequencyThreshold) {
+    private static ArrayList<String> filterWords(ArrayList<String> words, ArrayList<Double> frequencies,
+            double frequencyThreshold) {
         for (int wordIndex = 0; wordIndex < words.size();) {
             Double wordFrequency = frequencies.get(wordIndex);
             if (wordFrequency <= frequencyThreshold) {
@@ -86,13 +86,13 @@ public class Brain {
      */
     public static String initialGuess() {
 
-        /* Initial Guess Criteria:
+        /*
+         * Initial Guess Criteria:
          * no repeat letters
          * at least 2 vowels
          * choose random word
          */
 
-        Random rnd = new Random();
         ArrayList<String> initialGuessCandidates = filterWords(getWords(), getFrequencies(), 0.0);
         for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
             String vowels = "aeiou";
@@ -133,92 +133,47 @@ public class Brain {
         return guess;
     }
 
-    /**
-     * Removes all illegal words based on user's response and wordle rules.
-     * 
-     * @param guess     - String word that was guessed
-     * @param responses - char[] of responses from user's console (either g/y/n)
-     * @return String ArrayList - cleaned up list of valid words
-     */
     public static ArrayList<String> removeWords(String guess, char[] responses) {
-        // this method determines the method of word removal based on each letter and
-        // response, one at a time.
+        Iterator<String> iterator = words.iterator();
+        int letterIndex;
+        while (iterator.hasNext()) {
+            String word = iterator.next();
 
-        for (int i = 0; i < 5; i++) { // through each character
-            char letter = guess.charAt(i);
-            char response = responses[i];
-            boolean continueEvaluation = true;
-            for (int j = 0; j < 5; j++) { // searches for duplicate
-                if (j == i) {
-                    continue;
-                } // skips current letter
-                if (letter == guess.charAt(j)) { // if duplicate found
-                    if ((response != 'n') != (responses[j] != 'n')) { // either both are gray or both are not gray
-                        if (response == 'n') { // if this letter is the gray one
-                            for (int wordIndex = 0; wordIndex < words.size();) { // remove multiple
-                                String word = words.get(wordIndex);
-                                int instances = 0;
-                                for (int charIndex = 0; charIndex < 5; charIndex++) { // iterate through characters of
-                                                                                      // word
-                                    if (word.charAt(charIndex) == letter) {
-                                        instances++;
-                                    } // if character is query letter
-                                }
-                                if (instances > 1) { // if multiple instances of query letter
-                                    words.remove(word);
-                                } else {
-                                    wordIndex++;
-                                }
+            for (int i = 0; i < 5; i++) {
+                char letter = guess.charAt(i);
+                char response = responses[i];
+                char wordChar = word.charAt(i);
+
+                if (response == 'g' && wordChar != letter) {
+                    // if mismatched green letter
+                    iterator.remove();
+                    break;
+                } else if (response == 'y' && (wordChar == letter || word.indexOf(letter) == -1)) {
+                    // if matched yellow letter OR absence of yellow letter
+                    iterator.remove();
+                    break;
+                } else if (response == 'n') {
+                    if (wordChar == letter) {
+                        // if matched gray letter
+                        iterator.remove();
+                        break;
+                    } else if (word.indexOf(letter) != -1) { // if gray letter somewhere in word
+                        letterIndex = word.indexOf(letter);
+                        // remove unless letter position is locked OR there is a yellow letter somewhere
+                        boolean containsYellowInstances = false;
+                        int index = 0;
+                        while (index < 5) {
+                            if ((guess.charAt(index) == letter) && (responses[index] == 'y') && letterIndex < i) {
+                                containsYellowInstances = true;
                             }
-                            for (int wordIndex = 0; wordIndex < words.size();) { // remove at position
-                                String word = words.get(wordIndex);
-                                if (word.charAt(i) == letter) { // if letter at specified position, remove it
-                                    words.remove(word);
-                                } else {
-                                    wordIndex++;
-                                }
-                            }
-                            continueEvaluation = false;
+                            index++;
                         }
-                    }
-                }
-            }
-            if (!continueEvaluation) {
-                continue;
-            } // skips if letter was handled by gray duplicate exception rule above
-            if (response == 'g') {
-                for (int wordIndex = 0; wordIndex < words.size();) {
-                    String word = words.get(wordIndex);
-                    if (word.charAt(i) != letter) { // if letter at specified position, remove it
-                        words.remove(word);
-                    } else {
-                        wordIndex++;
-                    }
-                }
-            } else if (response == 'y') {
-                for (int wordIndex = 0; wordIndex < words.size();) {
-                    String word = words.get(wordIndex);
-                    if (word.charAt(i) == letter) { // if letter at specified position, remove it
-                        words.remove(word);
-                    } else {
-                        wordIndex++;
-                    }
-                }
-                for (int wordIndex = 0; wordIndex < words.size();) {
-                    String word = words.get(wordIndex);
-                    if (word.indexOf(letter) == -1) { // word does not contain letter
-                        words.remove(word);
-                    } else {
-                        wordIndex++;
-                    }
-                }
-            } else if (response == 'n') {
-                for (int wordIndex = 0; wordIndex < words.size();) { // remove words containing letter
-                    String word = words.get(wordIndex);
-                    if (word.indexOf(letter) != -1) {
-                        words.remove(word);
-                    } else {
-                        wordIndex++;
+                        //add: if the locked position is BEFORE gray letter, remove it
+                        if (!(responses[letterIndex] == 'g' && guess.charAt(i) == letter) 
+                            && !(containsYellowInstances)) {
+                            iterator.remove();
+                            break;
+                        }
                     }
                 }
             }
@@ -226,14 +181,12 @@ public class Brain {
         System.out.println("There are " + words.size() + " possible answers remaining.");
         return words;
     }
-
     /**
      * Criteria for determining next optimal guess.
      * 
      * @return String - next guess
      */
     public static String nextGuess() {
-        Random rnd = new Random();
         try {
             String guess = words.get(rnd.nextInt(words.size()));
             words.remove(guess);

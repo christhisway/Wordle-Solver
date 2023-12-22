@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Handler {
 
     private static Scanner sc = new Scanner(System.in);
+
     /**
      * Prompt/keyboard input handler for retrieving info from user.
      * 
