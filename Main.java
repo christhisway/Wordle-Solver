@@ -2,7 +2,7 @@
  * The Main entrypoint and game loop for Wordle Solver app.
  * 
  * @author Jayden Webb
- * @version %I%, %G%
+ * @version 1.1
  */
 
 public class Main {
@@ -17,29 +17,29 @@ public class Main {
   public static void main(String[] args) {
     System.out.println("Welcome to the Wordle Solver!\nCreated by Jayden Webb, December 2022");
     int attempts = 0;
-    GuessGenerator generator = new GuessGenerator();
-    Handler jesusChristOfNazareth = new Handler();
+    // generatorInitialize();
+    // Handler Handler = new Handler();
 
     // produce initial guess and retrieve feedback
-    String guess = generator.initialGuess();
-    char[] responses = jesusChristOfNazareth.guessHandler(guess);
+    String guess = GuessGenerator.initialGuess();
+    char[] responses = Handler.guessHandler(guess);
 
     // subsequent guess loop
     while (!checkCorrect(responses) && attempts < 5) {
       attempts++;
       System.out.println("Attempts remaining: " + (6 - attempts) + ".");
-      generator.removeWords(guess, responses);
-      guess = generator.nextGuess();
-      responses = jesusChristOfNazareth.guessHandler(guess);
+      GuessGenerator.removeWords(guess, responses);
+      guess = GuessGenerator.nextGuess();
+      responses = Handler.guessHandler(guess);
     }
 
     // check to see if correct or not
     if (checkCorrect(responses)) {
       System.out.println("\nGreat job program!");
-      jesusChristOfNazareth.closeScanner();
+      Handler.closeScanner();
     } else
       System.out.println("\nBad job program!");
-    jesusChristOfNazareth.closeScanner();
+    Handler.closeScanner();
   }
 
   /**

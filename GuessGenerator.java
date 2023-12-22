@@ -10,18 +10,8 @@ import java.util.Random;
  */
 
 public class GuessGenerator {
-    private static ArrayList<Double> frequencies;
-    private static ArrayList<String> words;
-
-    /**
-     * The constructor grabs all the words and frequencies, filters out the
-     * 0-frequency words, and places them in an ArrayList.
-     */
-    public GuessGenerator(){
-        frequencies = getFrequencies();
-        words = getWords();
-        words = filterWords(words, frequencies, 0.0);
-    }
+    private static ArrayList<Double> frequencies = getFrequencies();
+    private static ArrayList<String> words = filterWords(getWords(), frequencies, 0.0);
     
     /**
      * Reads file of word frequencies and puts them into a ArrayList.
@@ -94,7 +84,7 @@ public class GuessGenerator {
      * 
      * @return String - resulting initial guess
      */
-    public String initialGuess() {
+    public static String initialGuess() {
 
         /* Initial Guess Criteria:
          * no repeat letters
@@ -150,7 +140,7 @@ public class GuessGenerator {
      * @param responses - char[] of responses from user's console (either g/y/n)
      * @return String ArrayList - cleaned up list of valid words
      */
-    public ArrayList<String> removeWords(String guess, char[] responses) {
+    public static ArrayList<String> removeWords(String guess, char[] responses) {
         // this method determines the method of word removal based on each letter and
         // response, one at a time.
 
@@ -241,7 +231,7 @@ public class GuessGenerator {
      * 
      * @return String - next guess
      */
-    public String nextGuess() {
+    public static String nextGuess() {
         Random rnd = new Random();
         try {
             String guess = words.get(rnd.nextInt(words.size()));

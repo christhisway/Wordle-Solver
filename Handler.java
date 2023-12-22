@@ -16,7 +16,7 @@ public class Handler {
      * @param guess - current guess
      * @return char[] - array of responses (either g/y/n) for each letter
      */
-    public char[] guessHandler(String guess) {
+    public static char[] guessHandler(String guess) {
         System.out.println("\n\nGuess: " + guess);
         char[] responses = { 0, 0, 0, 0, 0 };
         for (int i = 0; i < 5; i++) {
@@ -45,7 +45,7 @@ public class Handler {
     /**
      * Closes the Scanner when it's no longer needed.
      */
-    public void closeScanner() {
+    public static void closeScanner() {
         if (sc != null) {
             sc.close();
         }
