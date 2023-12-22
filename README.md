@@ -43,11 +43,15 @@ Happy Wordle solving!
 In the future, I hope to:
 - [x] Abstract the many functions into files of related functions.
 - [ ] Rewrite the functions to be more concise and easier to read.
-- [ ] Optimize the method of word removal.
+- [ ] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.)
+- [ ] Optimize the method of word removal to take less time and memory.
 - [ ] Implement a rudimentary AI that finds the most optimal guess for each turn, minimizing guesses.
 - [ ] Add the ability for the user to define their own first guess.
 - [ ] Add ability to regenerate a guess if the user does not like the guess that the app gives.
+- [ ] Add a catch that does not allow the user to accidentally input feedback that conflicts with previously given feedback. (e.g. putting 'n' for a letter that was previously indicated as 'g' in the same position)
 - [ ] \(Stretch Goal) Implement a functional GUI.
 - [ ] \(Stretch Goal) Allow for undoing feedback entry, to fix accidental mistypes that may result in irreversable incorrect word removal.
+- [ ] \(Stretch Goal) Use a script to test the solver's accuracy against hundreds of Wordle games to prove 100% efficacy.
+- [ ] \(Stretch Goal) Use a list of Wordle's past answers to move those words to the bottom of the list, since the editors try not to repeat answers if they can help it.
 
 A special thanks to my Procedural and Object-Oriented Programming instructor, Michael D'Argenio, who reintroduced me to Java.
