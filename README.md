@@ -1,15 +1,18 @@
 # Wordle Solver by Jayden Webb
-
+Current Version: 1.1
 ## Description
 Hello! This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
 It works by suggesting a guess for the user to input into their Wordle game, 
 using the feedback (green, yellow, or grey squares) to filter out any impossible words, 
 then suggesting another guess until either the game ends or the correct answer is guessed.
 
-The largest challenge of this project was implementing the word filtering; the seemingly simple constraints of green, yellow, and gray letters
-in conjunction with the possibility of duplicate letters proved surprisingly difficult to filter down to explicit algorithms.
+It is optimized such that, in my testing, it has yet to fail to guess the answer in the allocated six attempts.
 
-Created entirely in Java, the program makes use of file reading, user input, various String methods, and ArrayLists. 
+The largest challenge of this project was implementing the word filtering; the seemingly simple constraints of green, yellow, and gray letters
+in conjunction with the possibility of duplicate letters proved surprisingly difficult to filter down to explicit algorithms
+when all cases must be considered separately and put together in a way that works properly.
+
+Created entirely in Java, the program makes use of file reading, user input, various String methods, and ArrayLists.
 
 ## Installation and Usage
 **Execute the following commands to download and run the Wordle Solver:**
@@ -40,10 +43,10 @@ Happy Wordle solving!
 
 ## To-Do List
 In the future, I hope to:
-- [x] Abstract the many functions into files of related functions.
-- [ ] Rewrite the functions to be more concise and easier to read.
+- [x] Abstract the many functions into files of related functions. (v1.1)
+- [x] Rewrite the functions to be more concise and easier to read. (v1.1)
 - [ ] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.)
-- [ ] Optimize the method of word removal to take less time and memory.
+- [x] Optimize the method of word removal to take less time and memory. (v1.1)
 - [ ] Implement a rudimentary AI that finds the most optimal guess for each turn, minimizing guesses.
 - [ ] Add the ability for the user to define their own first guess.
 - [ ] Add ability to regenerate a guess if the user does not like the guess that the app gives.
