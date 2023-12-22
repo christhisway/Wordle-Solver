@@ -9,7 +9,7 @@ import java.util.Random;
  * @since 1.1
  */
 
-public class GuessGenerator {
+public class Brain {
     private static ArrayList<Double> frequencies = getFrequencies();
     private static ArrayList<String> words = filterWords(getWords(), frequencies, 0.0);
     
