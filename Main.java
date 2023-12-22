@@ -6,25 +6,26 @@
  */
 
 public class Main {
-  
+
   /**
    * Main function - entry point to program.
+   * Creates objects for the input handler and guess generator, getting words and
+   * frequencies in the process.
    * 
    * @param args - command line arguments
    */
   public static void main(String[] args) {
-    //create objects for guess handler and guess generator, then get all words and frequencies
-    // initialize and get all words
-    
+    System.out.println("Welcome to the Wordle Solver!\nCreated by Jayden Webb, December 2022");
     int attempts = 0;
     GuessGenerator generator = new GuessGenerator();
     Handler jesusChristOfNazareth = new Handler();
+
     // produce initial guess and retrieve feedback
     String guess = generator.initialGuess();
     char[] responses = jesusChristOfNazareth.guessHandler(guess);
 
     // subsequent guess loop
-    while (!checkCorrect(responses) && attempts < 6) {
+    while (!checkCorrect(responses) && attempts < 5) {
       attempts++;
       System.out.println("Attempts remaining: " + (6 - attempts) + ".");
       generator.removeWords(guess, responses);
@@ -33,12 +34,12 @@ public class Main {
     }
 
     // check to see if correct or not
-    if (checkCorrect(responses)){
+    if (checkCorrect(responses)) {
       System.out.println("\nGreat job program!");
       jesusChristOfNazareth.closeScanner();
     } else
       System.out.println("\nBad job program!");
-      jesusChristOfNazareth.closeScanner();
+    jesusChristOfNazareth.closeScanner();
   }
 
   /**
@@ -49,7 +50,9 @@ public class Main {
    */
   public static boolean checkCorrect(char[] responses) {
     for (char character : responses) {
-      if (character != 'g') {return false;}
+      if (character != 'g') {
+        return false;
+      }
     }
     return true;
   }

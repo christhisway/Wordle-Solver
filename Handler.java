@@ -19,7 +19,6 @@ public class Handler {
     public char[] guessHandler(String guess) {
         System.out.println("\n\nGuess: " + guess);
         char[] responses = { 0, 0, 0, 0, 0 };
-
         for (int i = 0; i < 5; i++) {
             char letter = guess.charAt(i);
             System.out.print(letter + " (g/y/n): ");
@@ -39,14 +38,12 @@ public class Handler {
                 }
             }
             responses[i] = hint;
-            System.out.println("setting response at index " + i);
-            System.out.println(responses);
         }
         return responses;
     }
 
     /**
-     * Close the Scanner when it's no longer needed.
+     * Closes the Scanner when it's no longer needed.
      */
     public void closeScanner() {
         if (sc != null) {

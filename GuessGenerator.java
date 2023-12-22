@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Contains the words and their frequencies, and generates most optimal guess.
+ * Contains the words and their frequencies, and generates each guess.
  * 
  * @since 1.1
  */
@@ -12,18 +12,22 @@ import java.util.Random;
 public class GuessGenerator {
     private static ArrayList<Double> frequencies;
     private static ArrayList<String> words;
+
     /**
-     * The main function grabs all the words and frequencies, filters out the
+     * The constructor grabs all the words and frequencies, filters out the
      * 0-frequency words, and places them in an ArrayList.
-     * 
-     * @param args - command line arguments; not necessary.
      */
     public GuessGenerator(){
         frequencies = getFrequencies();
         words = getWords();
-        words = filterWords(0.0);
+        words = filterWords(words, frequencies, 0.0);
     }
     
+    /**
+     * Reads file of word frequencies and puts them into a ArrayList.
+     * 
+     * @return Double ArrayList - all frequencies of words.
+     */
     private static ArrayList<Double> getFrequencies() {
         Path freqPath = Path.of("words_freqs.csv");
         String freqString = null;
@@ -65,7 +69,14 @@ public class GuessGenerator {
         return wordsArrayList;
     }
 
-    private static ArrayList<String> filterWords(double frequencyThreshold) {
+    /**
+     * Removes all words under a specified frequency (generally set to 0.0) from the word list.
+     * 
+     * @param words ArrayList<String> of words to be filtered
+     * @param frequencyThreshold Double value, at or below which all words should be removed from words
+     * @return Modified String ArrayList without the unfrequent words
+     */
+    private static ArrayList<String> filterWords(ArrayList<String> words, ArrayList<Double> frequencies, double frequencyThreshold) {
         for (int wordIndex = 0; wordIndex < words.size();) {
             Double wordFrequency = frequencies.get(wordIndex);
             if (wordFrequency <= frequencyThreshold) {
@@ -85,16 +96,17 @@ public class GuessGenerator {
      */
     public String initialGuess() {
 
-        /*
+        /* Initial Guess Criteria:
          * no repeat letters
          * at least 2 vowels
-         * choose random
+         * choose random word
          */
 
         Random rnd = new Random();
-        for (int wordIndex = 0; wordIndex < words.size();) { // retrieves word
+        ArrayList<String> initialGuessCandidates = filterWords(getWords(), getFrequencies(), 0.0);
+        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
             String vowels = "aeiou";
-            String testingWord = words.get(wordIndex);
+            String testingWord = initialGuessCandidates.get(wordIndex);
             int vowelsInWord = 0;
             for (int i = 0; i < testingWord.length(); i++) { // for each character
                 if (vowels.contains(testingWord.substring(i, i + 1))) {
@@ -102,14 +114,14 @@ public class GuessGenerator {
                 }
             }
             if (vowelsInWord < 2) { // makes sure vowels are different
-                words.remove(testingWord);
+                initialGuessCandidates.remove(testingWord);
             } else {
                 wordIndex++;
             }
         }
-        for (int wordIndex = 0; wordIndex < words.size();) { // retrieves word
+        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
             boolean wordContainsDuplicates = false;
-            String testingWord = words.get(wordIndex);
+            String testingWord = initialGuessCandidates.get(wordIndex);
             for (int i = 0; i < testingWord.length(); i++) { // for each character
                 if (i == 0) {
                     continue;
@@ -121,12 +133,12 @@ public class GuessGenerator {
                 }
             }
             if (wordContainsDuplicates) {
-                words.remove(testingWord);
+                initialGuessCandidates.remove(testingWord);
             } else {
                 wordIndex++;
             }
         }
-        String guess = words.get(rnd.nextInt(words.size()));
+        String guess = initialGuessCandidates.get(rnd.nextInt(initialGuessCandidates.size()));
         words.remove(guess);
         return guess;
     }
@@ -225,9 +237,8 @@ public class GuessGenerator {
     }
 
     /**
-     * Criteria for determining next optimal guess. (Optional)
+     * Criteria for determining next optimal guess.
      * 
-     * @param words - list of possible words
      * @return String - next guess
      */
     public String nextGuess() {
