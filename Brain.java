@@ -11,7 +11,7 @@ import java.util.*;
 public class Brain {
     private static Random rnd = new Random();
     private static ArrayList<Double> frequencies = getFrequencies();
-    private static ArrayList<String> words = filterWords(getWords(), frequencies, 0.0);
+    private static ArrayList<String> words = getWords();
     
 
     /**
@@ -20,7 +20,7 @@ public class Brain {
      * @return Double ArrayList - all frequencies of words.
      */
     private static ArrayList<Double> getFrequencies() {
-        Path freqPath = Path.of("words_freqs.csv");
+        Path freqPath = Path.of("solutions.csv");
         String freqString = null;
         try {
             freqString = Files.readString(freqPath);
@@ -34,6 +34,7 @@ public class Brain {
             Double frequency = Double.parseDouble(freqLine.substring(6));
             freqArrayList.add(frequency);
         }
+        System.out.println(freqArrayList.size());
         return freqArrayList;
     }
 
@@ -44,7 +45,7 @@ public class Brain {
      */
     private static ArrayList<String> getWords() {
         // only returns words with non-zero frequencies
-        Path wordsPath = Path.of("words.txt");
+        Path wordsPath = Path.of("solutions.csv");
         String wordsString = null;
         try {
             wordsString = Files.readString(wordsPath);
@@ -53,7 +54,13 @@ public class Brain {
             System.exit(0);
         }
         String[] wordsArray = wordsString.split("\n");
-        return new ArrayList<>(Arrays.asList(wordsArray));
+        ArrayList<String> wordsArrayList = new ArrayList<>();
+        for (String wordsLine : wordsArray){
+            String word = wordsLine.substring(0, 5);
+            wordsArrayList.add(word);
+        }
+        System.out.println(wordsArrayList.size());
+        return wordsArrayList;
     }
 
     /**
