@@ -43,6 +43,59 @@ public class Handler {
         return responses;
     }
 
+    public static String nextGuess(int attempts){
+        System.out.print("Would you like to give your own guess (y) or generate a new one (n): ");
+        boolean userDefined = (sc.nextLine().toLowerCase().charAt(0) == 'y') ? true : false;
+        String guess = new String();
+        if (userDefined){
+            guess = userDefinedGuess();
+        } else {
+            guess = Brain.nextGuess(attempts);
+        }
+        return guess;
+    }
+
+    private static String userDefinedGuess(){
+        String userGuess = "";
+        while (userGuess.equals("")){
+            System.out.print("Enter your five-letter guess here: ");
+            userGuess = sc.nextLine();
+            try {
+                userGuess = userGuess.substring(0, 5);
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Not enough letters!");
+                userGuess = "";
+                continue;
+            }
+            if (!allAlphabetical(userGuess)) {
+                System.out.println("Invalid guess: only use alphabetical characters.");
+                userGuess = "";
+                continue;
+            }
+            if (!Brain.validGuesses.contains(userGuess)){
+                System.out.println("That guess is not in the word list!");
+                userGuess = "";
+                continue;
+            }
+        }
+        /*
+        * Assert the following:
+        * of length 5
+        * all alphabetical
+        * is a valid guess (cross-check with word list)
+        */
+        return userGuess;
+    }
+
+    private static boolean allAlphabetical(String str){
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isLetter(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Closes the Scanner when it's no longer needed.
      */

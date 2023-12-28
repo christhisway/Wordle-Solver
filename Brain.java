@@ -10,8 +10,9 @@ import java.util.*;
 
 public class Brain {
     private static Random rnd = new Random();
-    private static ArrayList<Double> frequencies = getFrequencies();
-    private static ArrayList<String> words = getWords();
+    // private static ArrayList<Double> frequencies = getFrequencies();
+    private static ArrayList<String> words = getWords("solutions.csv");
+    public static ArrayList<String> validGuesses = getWords("words.txt");
     
 
     /**
@@ -34,7 +35,6 @@ public class Brain {
             Double frequency = Double.parseDouble(freqLine.substring(6));
             freqArrayList.add(frequency);
         }
-        System.out.println(freqArrayList.size());
         return freqArrayList;
     }
 
@@ -43,9 +43,9 @@ public class Brain {
      * 
      * @return String ArrayList - all possible words
      */
-    private static ArrayList<String> getWords() {
+    private static ArrayList<String> getWords(String filePath) {
         // only returns words with non-zero frequencies
-        Path wordsPath = Path.of("solutions.csv");
+        Path wordsPath = Path.of(filePath);
         String wordsString = null;
         try {
             wordsString = Files.readString(wordsPath);
@@ -59,7 +59,6 @@ public class Brain {
             String word = wordsLine.substring(0, 5);
             wordsArrayList.add(word);
         }
-        System.out.println(wordsArrayList.size());
         return wordsArrayList;
     }
 
@@ -84,60 +83,6 @@ public class Brain {
             }
         }
         return words;
-    }
-
-    /**
-     * Method for determining initial guess.
-     * 
-     * @return String - resulting initial guess
-     */
-    public static String initialGuess() {
-
-        /*
-         * Initial Guess Criteria:
-         * no repeat letters
-         * at least 2 vowels
-         * choose random word
-         */
-
-        ArrayList<String> initialGuessCandidates = filterWords(getWords(), getFrequencies(), 0.0);
-        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
-            String vowels = "aeiou";
-            String testingWord = initialGuessCandidates.get(wordIndex);
-            int vowelsInWord = 0;
-            for (int i = 0; i < testingWord.length(); i++) { // for each character
-                if (vowels.contains(testingWord.substring(i, i + 1))) {
-                    vowelsInWord++;
-                }
-            }
-            if (vowelsInWord < 2) { // makes sure vowels are different
-                initialGuessCandidates.remove(testingWord);
-            } else {
-                wordIndex++;
-            }
-        }
-        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
-            boolean wordContainsDuplicates = false;
-            String testingWord = initialGuessCandidates.get(wordIndex);
-            for (int i = 0; i < testingWord.length(); i++) { // for each character
-                if (i == 0) {
-                    continue;
-                } // prevents range errors
-                if (testingWord.substring(0, i).contains(testingWord.substring(i, i + 1))) {
-                    // removes words with duplicate characters
-                    wordContainsDuplicates = true;
-                    break;
-                }
-            }
-            if (wordContainsDuplicates) {
-                initialGuessCandidates.remove(testingWord);
-            } else {
-                wordIndex++;
-            }
-        }
-        String guess = initialGuessCandidates.get(rnd.nextInt(initialGuessCandidates.size()));
-        words.remove(guess);
-        return guess;
     }
 
     public static ArrayList<String> removeWords(String guess, char[] responses) {
@@ -193,7 +138,8 @@ public class Brain {
      * 
      * @return String - next guess
      */
-    public static String nextGuess() {
+    public static String nextGuess(int attempts) {
+        if (attempts == 0) return "salet";
         try {
             String guess = words.get(rnd.nextInt(words.size()));
             words.remove(guess);
