@@ -2,7 +2,7 @@
  * The Main entrypoint and game loop for Wordle Solver app.
  * 
  * @author Jayden Webb
- * @version 1.1
+ * @version 0.2
  */
 
 public class Main {
