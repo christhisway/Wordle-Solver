@@ -4,7 +4,7 @@ import java.util.Scanner;
  * This object asks for the results of a guess and adjusts the remaining words
  * accordingly. In essence, it's a modified version of the Scanner.
  * 
- * @since 1.1
+ * @since 0.2
  */
 
 public class Handler {
