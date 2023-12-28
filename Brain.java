@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Contains the words and their frequencies, and generates each guess.
  * 
- * @since 1.1
+ * @since 0.2
  */
 
 public class Brain {
