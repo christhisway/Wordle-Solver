@@ -1,5 +1,5 @@
 # Wordle Solver by Jayden Webb
-Current Version: 1.1
+
 ## Description
 Hello! This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
 It works by suggesting a guess for the user to input into their Wordle game, 
@@ -26,7 +26,7 @@ Created entirely in Java, the program makes use of file reading, user input, var
    Make sure you have Java installed on your system.
 
 1. **Follow On-Screen Instructions:**
-   - The program will prompt you with guesses, and you can provide feedback for each letter using:
+   - The program will prompt you with words to enter into the Wordle, and you can provide feedback for each letter using:
       - **'g'** (green: correct)
       - **'y'** (yellow: in the wrong position)
       - **'n'** (gray: not in the word)
@@ -34,8 +34,7 @@ Created entirely in Java, the program makes use of file reading, user input, var
 2. **Repeat Until Solved:**
    - The solver will continue suggesting guesses based on your feedback until the correct word is identified.
 
-3. **Enjoy Solving Wordles:**
-   - Have fun using the Wordle Solver and mastering those challenging Wordle puzzles!
+3. **Enjoy Solving Wordles!**
 
 Feel free to explore the code and customize the solver as needed. If you encounter any issues or have suggestions, please open an issue on the GitHub repository.
 
