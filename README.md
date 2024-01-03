@@ -44,10 +44,10 @@ Happy Wordle solving!
 In the future, I hope to:
 - [x] Abstract the many functions into files of related functions. (v0.2)
 - [x] Rewrite the functions to be more concise and easier to read. (v0.2)
-- [ ] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.)
+- [x] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.)
 - [x] Optimize the method of word removal to take less time and memory. (v0.2)
 - [ ] Implement a rudimentary AI that finds the most optimal guess for each turn, minimizing guesses.
-- [ ] Add the ability for the user to define their own first guess.
+- [x] Add the ability for the user to define their own guesses.
 - [ ] Add ability to regenerate a guess if the user does not like the guess that the app gives.
 - [ ] Add a catch that does not allow the user to accidentally input feedback that conflicts with previously given feedback. (e.g. putting 'n' for a letter that was previously indicated as 'g' in the same position)
 - [ ] \(Stretch Goal) Implement a functional GUI.
