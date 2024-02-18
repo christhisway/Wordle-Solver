@@ -1,7 +1,7 @@
 # Wordle Solver by Jayden Webb
 
 ## Description
-Hello! This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
+This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
 It works by suggesting a guess for the user to input into their Wordle game, 
 using the feedback (green, yellow, or grey squares) to filter out any impossible words, 
 then suggesting another guess until either the game ends or the correct answer is guessed.
