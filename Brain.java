@@ -3,48 +3,27 @@ import java.nio.file.*;
 import java.util.*;
 
 /**
- * Contains the words and their frequencies, and generates each guess.
+ * Contains all functions that deal with filtering the words list and generating guesses.
+ * The list of all possible words and the list of all possible solutions are kept in this class.
  * 
  * @since 0.2
  */
 
 public class Brain {
     private static Random rnd = new Random();
-    private static ArrayList<Double> frequencies = getFrequencies();
-    private static ArrayList<String> words = filterWords(getWords(), frequencies, 0.0);
+    private static ArrayList<String> solutions = getWords("solutions.csv");
+    public static ArrayList<String> validGuesses = getWords("words.txt");
     
 
     /**
-     * Reads file of word frequencies and puts them into a ArrayList.
+     * Retrieves all possible words from the given file and places them into an ArrayList.
      * 
-     * @return Double ArrayList - all frequencies of words.
-     */
-    private static ArrayList<Double> getFrequencies() {
-        Path freqPath = Path.of("words_freqs.csv");
-        String freqString = null;
-        try {
-            freqString = Files.readString(freqPath);
-        } catch (IOException e) {
-            System.out.println(e);
-            System.exit(0);
-        }
-        String[] freqArray = freqString.split("\n");
-        ArrayList<Double> freqArrayList = new ArrayList<>();
-        for (String freqLine : freqArray) {
-            Double frequency = Double.parseDouble(freqLine.substring(6));
-            freqArrayList.add(frequency);
-        }
-        return freqArrayList;
-    }
-
-    /**
-     * Retrieves all possible words from the file.
-     * 
+     * @param filePath the path of the file to be read: either solutions.csv or words.txt.
      * @return String ArrayList - all possible words
+     * 
      */
-    private static ArrayList<String> getWords() {
-        // only returns words with non-zero frequencies
-        Path wordsPath = Path.of("words.txt");
+    private static ArrayList<String> getWords(String filePath) {
+        Path wordsPath = Path.of(filePath);
         String wordsString = null;
         try {
             wordsString = Files.readString(wordsPath);
@@ -53,88 +32,22 @@ public class Brain {
             System.exit(0);
         }
         String[] wordsArray = wordsString.split("\n");
-        return new ArrayList<>(Arrays.asList(wordsArray));
+        ArrayList<String> wordsArrayList = new ArrayList<>();
+        for (String wordsLine : wordsArray){
+            String word = wordsLine.substring(0, 5);
+            wordsArrayList.add(word);
+        }
+        return wordsArrayList;
     }
 
     /**
-     * Removes all words under a specified frequency (generally set to 0.0) from the
-     * word list.
+     * Filters through the solution list and removes any invalid guesses using the most recent guess and Wordle's feedback.
      * 
-     * @param words              ArrayList<String> of words to be filtered
-     * @param frequencyThreshold Double value, at or below which all words should be
-     *                           removed from words
-     * @return Modified String ArrayList without the unfrequent words
+     * @param guess - the guess the user entered into the Wordle
+     * @param responses the color of each letter given in response to the user's guess
      */
-    private static ArrayList<String> filterWords(ArrayList<String> words, ArrayList<Double> frequencies,
-            double frequencyThreshold) {
-        for (int wordIndex = 0; wordIndex < words.size();) {
-            Double wordFrequency = frequencies.get(wordIndex);
-            if (wordFrequency <= frequencyThreshold) {
-                words.remove(wordIndex);
-                frequencies.remove(wordIndex);
-            } else {
-                wordIndex++;
-            }
-        }
-        return words;
-    }
-
-    /**
-     * Method for determining initial guess.
-     * 
-     * @return String - resulting initial guess
-     */
-    public static String initialGuess() {
-
-        /*
-         * Initial Guess Criteria:
-         * no repeat letters
-         * at least 2 vowels
-         * choose random word
-         */
-
-        ArrayList<String> initialGuessCandidates = filterWords(getWords(), getFrequencies(), 0.0);
-        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
-            String vowels = "aeiou";
-            String testingWord = initialGuessCandidates.get(wordIndex);
-            int vowelsInWord = 0;
-            for (int i = 0; i < testingWord.length(); i++) { // for each character
-                if (vowels.contains(testingWord.substring(i, i + 1))) {
-                    vowelsInWord++;
-                }
-            }
-            if (vowelsInWord < 2) { // makes sure vowels are different
-                initialGuessCandidates.remove(testingWord);
-            } else {
-                wordIndex++;
-            }
-        }
-        for (int wordIndex = 0; wordIndex < initialGuessCandidates.size();) { // retrieves word
-            boolean wordContainsDuplicates = false;
-            String testingWord = initialGuessCandidates.get(wordIndex);
-            for (int i = 0; i < testingWord.length(); i++) { // for each character
-                if (i == 0) {
-                    continue;
-                } // prevents range errors
-                if (testingWord.substring(0, i).contains(testingWord.substring(i, i + 1))) {
-                    // removes words with duplicate characters
-                    wordContainsDuplicates = true;
-                    break;
-                }
-            }
-            if (wordContainsDuplicates) {
-                initialGuessCandidates.remove(testingWord);
-            } else {
-                wordIndex++;
-            }
-        }
-        String guess = initialGuessCandidates.get(rnd.nextInt(initialGuessCandidates.size()));
-        words.remove(guess);
-        return guess;
-    }
-
-    public static ArrayList<String> removeWords(String guess, char[] responses) {
-        Iterator<String> iterator = words.iterator();
+    public static void removeWords(String guess, char[] responses) {
+        Iterator<String> iterator = solutions.iterator();
         int letterIndex;
         while (iterator.hasNext()) {
             String word = iterator.next();
@@ -178,18 +91,22 @@ public class Brain {
                 }
             }
         }
-        System.out.println("There are " + words.size() + " possible answers remaining.");
-        return words;
+        System.out.println("There are " + solutions.size() + " possible answers remaining.");
+        System.out.println(solutions);
     }
+
+
     /**
-     * Criteria for determining next optimal guess.
+     * Criteria for determining next optimal guess. It will always return "SALET" for the first guess, as this has been experimentally proven to be the most effective first guess for programs. In all subsequent guesses, it returns a random word from the updated solutions list.
      * 
-     * @return String - next guess
+     * @param attempts the number of attempts the user has already used.
+     * @return String - the word determined to be the best next guess.
      */
-    public static String nextGuess() {
+    public static String nextGuess(int attempts) {
+        if (attempts == 0) return "salet";
         try {
-            String guess = words.get(rnd.nextInt(words.size()));
-            words.remove(guess);
+            String guess = solutions.get(rnd.nextInt(solutions.size()));
+            solutions.remove(guess);
             return guess;
         } catch (IllegalArgumentException e) {
             System.out.println("Error PICNIC: The word list has no more valid words.");

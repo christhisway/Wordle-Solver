@@ -27,10 +27,7 @@ public class Main {
     while (attempts < 6) {
       System.out.println("Guesses remaining: " + (6 - attempts) + ".");
       // Assign word from word list to guess
-      if (attempts == 0)
-        guess = Brain.initialGuess();
-      else
-        guess = Brain.nextGuess();
+      guess = Handler.nextGuess(attempts);
       // Grab Wordle Feedback for the given guess
       responses = Handler.getFeedback(guess);
       if ("ggggg".equals(String.valueOf(responses))) {// stops execution if the guess was correct

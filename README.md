@@ -1,7 +1,7 @@
 # Wordle Solver by Jayden Webb
 
 ## Description
-Hello! This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
+This is a simple Wordle Solver, originally created as a project for an OOP class in my senior year of high school.
 It works by suggesting a guess for the user to input into their Wordle game, 
 using the feedback (green, yellow, or grey squares) to filter out any impossible words, 
 then suggesting another guess until either the game ends or the correct answer is guessed.
@@ -12,7 +12,7 @@ The largest challenge of this project was implementing the word filtering; the s
 in conjunction with the possibility of duplicate letters proved surprisingly difficult to filter down to explicit algorithms
 when all cases must be considered separately and put together in a way that works properly.
 
-Created entirely in Java, the program makes use of file reading, user input, various String methods, and ArrayLists.
+Created entirely in Java, the program makes use of file reading, user input, various String methods, and ArrayLists, and a few simple algorithms to optimize the solving of the Wordle.
 
 ## Installation and Usage
 **Execute the following commands to download and run the Wordle Solver:**
@@ -44,10 +44,10 @@ Happy Wordle solving!
 In the future, I hope to:
 - [x] Abstract the many functions into files of related functions. (v0.2)
 - [x] Rewrite the functions to be more concise and easier to read. (v0.2)
-- [ ] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.)
+- [x] Improve frequency filtering of the list such that the only guesses provided are ones that could reasonably be the answer. (This is important because the solutions to the NYT Wordle are always chosen by a human.) (v0.3)
 - [x] Optimize the method of word removal to take less time and memory. (v0.2)
-- [ ] Implement a rudimentary AI that finds the most optimal guess for each turn, minimizing guesses.
-- [ ] Add the ability for the user to define their own first guess.
+- [X] Implement a rudimentary AI that finds the most optimal guess for each turn, minimizing guesses. (v0.3)
+- [x] Add the ability for the user to define their own guesses. (v0.3)
 - [ ] Add ability to regenerate a guess if the user does not like the guess that the app gives.
 - [ ] Add a catch that does not allow the user to accidentally input feedback that conflicts with previously given feedback. (e.g. putting 'n' for a letter that was previously indicated as 'g' in the same position)
 - [ ] \(Stretch Goal) Implement a functional GUI.
