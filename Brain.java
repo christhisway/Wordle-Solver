@@ -97,7 +97,9 @@ public class Brain {
 
 
     /**
-     * Criteria for determining next optimal guess. It will always return "SALET" for the first guess, as this has been experimentally proven to be the most effective first guess for programs. In all subsequent guesses, it returns a random word from the updated solutions list.
+     * Criteria for determining next optimal guess. It will always return "SALET" for the first guess, 
+     * as this has been experimentally proven to be the most effective first guess for programs. 
+     * In all subsequent guesses, it returns a random word from the updated solutions list.
      * 
      * @param attempts the number of attempts the user has already used.
      * @return String - the word determined to be the best next guess.
